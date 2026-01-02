@@ -13,20 +13,31 @@
 
 #define REFRESH_RATE 120
 #define INPUT_RATE 30
-#define TICK_RATE 1
+#define TICK_RATE 5
+
+#define MAX_SNAKE_LEN DISPLAY_COLS * DISPLAY_ROWS
 
 typedef struct {
 	CANVAS_t * canvas;
 	INPUT_t * input;
 
-	//---------------------------Player ----------------/
-	C_COORDINATES_t player_pos;
-	PIXEL_t player_color;
+	// --- Snake State ---
+	C_COORDINATES_t body[MAX_SNAKE_LEN];
+	uint8_t length;
+	key_action_e current_dir;
+
+	C_COORDINATES_t food;
+
+	bool game_over;
+
+	uint32_t move_timer; // To control speed
 }GAME_Engine_t;
 
 void GAME_ctor(GAME_Engine_t * const me, CANVAS_t * canvas, INPUT_t * input);
 
 void GAME_update(GAME_Engine_t * const me);
 void GAME_render(GAME_Engine_t * const me);
+
+void GAME_reset(GAME_Engine_t *const me);
 
 #endif /* INC_GAME_H_ */
