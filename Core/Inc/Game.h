@@ -11,9 +11,17 @@
 #include "Input.h"
 #include "Canvas.h"
 
+#define REFRESH_RATE 120
+#define INPUT_RATE 30
+#define TICK_RATE 1
+
 typedef struct {
 	CANVAS_t * canvas;
 	INPUT_t * input;
+
+	//---------------------------Player ----------------/
+	C_COORDINATES_t player_pos;
+	PIXEL_t player_color;
 }GAME_Engine_t;
 
 void GAME_ctor(GAME_Engine_t * const me, CANVAS_t * canvas, INPUT_t * input);

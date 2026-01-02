@@ -30,28 +30,28 @@ static inline uint8_t col_to_int(uint8_t mask) {
 }
 
 void KEYPAD_poll(KEYPAD_t *const me) {
-	static uint8_t row_masks[] = { 0xFE, 0xFD, 0xFB, 0xF7 };
+    static uint8_t row_masks[] = { 0xFE, 0xFD, 0xFB, 0xF7 };
+    keys_e detected_key = NO_KEY; // Use a local variable
 
-	for (int i = 0; i < 4; i++) {
-		// Write row mask to PCF8574 (lower 4 bits are rows, upper 4 bits stay 1)
-		me->driver.set_pins.pin_byte[0] = row_masks[i] | 0xF0;
-		PCF8574_write(&(me->driver));
+    for (int i = 0; i < 4; i++) {
+        me->driver.set_pins.pin_byte[0] = row_masks[i] | 0xF0;
+        PCF8574_write(&(me->driver));
+        PCF8574_read(&(me->driver));
 
-		// Read back the state
-		PCF8574_read(&(me->driver));
+        uint8_t col_mask = (me->driver.status_pins.pin_byte[0] >> 4) & 0x0F;
+        if (col_mask != 0x0F) {
+            uint8_t col_idx = col_to_int(col_mask);
+            if (col_idx != 0xFF) {
+                detected_key = (keys_e) ((3 - i) + (col_idx * 4));
+                break; // Exit the loop immediately once a key is found
+            }
+        }
+    }
 
-		// Check upper 4 bits (Columns) for a 0
-		uint8_t col_mask = (me->driver.status_pins.pin_byte[0] >> 4) & 0x0F;
-		if (col_mask != 0x0F) {
-			uint8_t col_idx = col_to_int(col_mask);
-
-			if (col_idx != 0xFF) {
-				keys_e new_key = (keys_e) ((3 - i) + (col_idx * 4));
-				me->key = new_key;
-				me->new_key_press = true;
-				return;
-			}
-		}
-	}
-	me->key = NO_KEY;
+    if (detected_key != me->key) {
+        if (detected_key != NO_KEY) {
+            me->new_key_press = true;
+        }
+        me->key = detected_key;
+    }
 }

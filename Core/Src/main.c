@@ -112,6 +112,7 @@ int main(void) {
 	srand(HAL_GetTick());
 
 	uint32_t last_tick = 0;
+	uint8_t counter_30Hz = 0;
 
 	/* USER CODE END 2 */
 
@@ -123,17 +124,20 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 		uint32_t now = HAL_GetTick();
 
-		if (now - last_tick >= (1000 / 30)) { // 30 FPS
+		if (now - last_tick >= (1000 / REFRESH_RATE)) { // 30 FPS
 			last_tick = now;
 
-			// 1. Get Input
-			KEYPAD_poll(&my_keypad);
-
-			// 2. Run Game Logic (e.g. move player based on my_keypad.key)
-//	          GAME_update(&my_game);
+			if(++counter_30Hz > REFRESH_RATE/INPUT_RATE) {
+				// 1. Get Input
+				counter_30Hz = 0;
+				KEYPAD_poll(&my_keypad);
+				GAME_update(&my_game_engine);
+			}
 
 			// 3. Draw Game to Buffer
 			GAME_render(&my_game_engine);
+
+			CANVAS_sync(&my_canvas);
 
 			// 4. Push to Hardware
 			DISPLAY_update(&my_display);
