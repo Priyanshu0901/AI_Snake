@@ -108,11 +108,10 @@ int main(void) {
 	GAME_Engine_t my_game_engine;
 	GAME_ctor(&my_game_engine, &my_canvas, &my_input);
 
-
 	srand(HAL_GetTick());
 
 	uint32_t last_tick = 0;
-	uint8_t counter_30Hz = 0;
+	uint8_t counter_input = 0, counter_render = 0, counter_tick = 0;
 
 	/* USER CODE END 2 */
 
@@ -124,22 +123,29 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 		uint32_t now = HAL_GetTick();
 
-		if (now - last_tick >= (1000 / REFRESH_RATE)) { // 30 FPS
+		if (now - last_tick >= (1000 / REFRESH_RATE)) { // 60 FPS
 			last_tick = now;
 
-			if(++counter_30Hz > REFRESH_RATE/INPUT_RATE) {
+			if (++counter_input > REFRESH_RATE / INPUT_RATE) {
 				// 1. Get Input
-				counter_30Hz = 0;
+				counter_input = 0;
 				KEYPAD_poll(&my_keypad);
 				GAME_update(&my_game_engine);
 			}
 
-			// 3. Draw Game to Buffer
-			GAME_render(&my_game_engine);
+			if (++counter_tick > REFRESH_RATE / TICK_RATE) {
+				counter_tick = 0;
+				GAME_tick(&my_game_engine);
+			}
 
-			CANVAS_sync(&my_canvas);
+			if (++counter_render > REFRESH_RATE / RENDER_RATE) {
+				counter_render = 0;
+				// 3. Draw Game to Buffer
+				GAME_render(&my_game_engine);
+			}
 
 			// 4. Push to Hardware
+			CANVAS_sync(&my_canvas);
 			DISPLAY_update(&my_display);
 		}
 	}
