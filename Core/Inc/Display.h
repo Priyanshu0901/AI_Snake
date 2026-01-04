@@ -14,7 +14,7 @@
 #define DISPLAY_ROWS 8
 #define DISPLAY_COLS 8
 
-#define DEFAULT_BRIGHTNESS 1U << 4
+#define DEFAULT_BRIGHTNESS 1U << 5
 
 typedef struct{
 	PIXEL_t * display_buffer;
@@ -32,6 +32,6 @@ void DISPLAY_update(DISPLAY_t * const me);
 /*
  * Test Functions
  */
-void DISPLAY_test(DISPLAY_t * const me);
+//void DISPLAY_test(DISPLAY_t * const me);
 
 #endif /* INC_DISPLAY_H_ */
