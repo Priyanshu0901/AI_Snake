@@ -109,8 +109,10 @@ int main(void) {
 	GAME_Engine_t my_game_engine;
 	GAME_ctor(&my_game_engine, &my_canvas, &my_input);
 
+#ifdef AI
 	AI_t my_ai_player;
 	AI_ctor(&my_ai_player,&my_game_engine);
+#endif
 
 	srand(HAL_GetTick());
 

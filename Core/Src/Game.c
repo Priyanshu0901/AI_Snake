@@ -10,10 +10,10 @@
 #include <string.h>
 #include <math.h>
 
-#define FOOD_LUT_SIZE 40
+#define FOOD_LUT_SIZE 20
 static PIXEL_t food_color_lut[FOOD_LUT_SIZE];
 
-#define SNAKE_LUT_SIZE 60 // Larger size = smoother rainbow
+#define SNAKE_LUT_SIZE MAX_SNAKE_LEN // Larger size = smoother rainbow
 static PIXEL_t snake_color_lut[SNAKE_LUT_SIZE];
 
 void generate_food_color_lut() {
@@ -128,6 +128,8 @@ void move_snake(GAME_Engine_t *me) {
 }
 
 void spawn_food(GAME_Engine_t *const me) {
+	if(MAX_SNAKE_LEN <= me->length) GAME_reset(me);
+
 	bool on_snake;
 	me->food_color = 0;
 	do {
@@ -204,11 +206,8 @@ void GAME_render(GAME_Engine_t *const me) {
 	CANVAS_draw_point(me->canvas, me->food, get_food_color(me));
 
 	// 2. Draw Snake
-	static uint16_t rainbow_timer = 0;
-	rainbow_timer++;
 	for (int i = 0; i < me->length; i++) {
-		int color_idx = (i * 2 + rainbow_timer) % SNAKE_LUT_SIZE;
-		CANVAS_draw_point(me->canvas, me->body[i], snake_color_lut[color_idx]);
+		CANVAS_draw_point(me->canvas, me->body[i], snake_color_lut[i]);
 	}
 }
 

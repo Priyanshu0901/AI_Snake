@@ -12,6 +12,7 @@
 
 typedef struct {
 	GAME_Engine_t * game_state;
+	C_COORDINATES_t ham_path[DISPLAY_COLS * DISPLAY_ROWS];
 }AI_t;
 
 void AI_ctor(AI_t * const me, GAME_Engine_t * game_state);
