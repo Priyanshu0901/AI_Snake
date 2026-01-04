@@ -13,6 +13,7 @@
 
 #define REFRESH_RATE 120
 #define INPUT_RATE 30
+#define RENDER_RATE 60
 #define TICK_RATE 5
 
 #define MAX_SNAKE_LEN DISPLAY_COLS * DISPLAY_ROWS
@@ -27,15 +28,16 @@ typedef struct {
 	key_action_e current_dir;
 
 	C_COORDINATES_t food;
+	uint8_t food_color;
 
 	bool game_over;
 
-	uint32_t move_timer; // To control speed
 }GAME_Engine_t;
 
 void GAME_ctor(GAME_Engine_t * const me, CANVAS_t * canvas, INPUT_t * input);
 
 void GAME_update(GAME_Engine_t * const me);
+void GAME_tick(GAME_Engine_t * const me);
 void GAME_render(GAME_Engine_t * const me);
 
 void GAME_reset(GAME_Engine_t *const me);
