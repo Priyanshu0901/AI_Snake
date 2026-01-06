@@ -68,8 +68,7 @@ The exact pin configuration depends on your setup, but typically:
 
 ## 💻 Software Requirements
 
-- **IDE**: [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html)
-- **Firmware**: STM32 HAL Library
+- **IDE**: STM32CubeIDE
 - **Programmer**: ST-LINK (built into Nucleo board)
 - **Optional**: Serial terminal for debugging (9600 baud)
 
