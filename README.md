@@ -1,4 +1,4 @@
-# 🐍 Rainbow Snake Game
+# Rainbow Snake Game
 
 A classic Snake game implementation running on an STM32F411RE microcontroller, featuring a vibrant WS2812B RGB LED matrix display (8x8) and keyboard matrix input controls.
 
@@ -6,21 +6,15 @@ A classic Snake game implementation running on an STM32F411RE microcontroller, f
 ![Display](https://img.shields.io/badge/Display-WS2812B-green)
 ![IDE](https://img.shields.io/badge/IDE-STM32CubeIDE-orange)
 
-## 🎮 Overview
+## Overview
 
 This project brings the classic Snake game to life on embedded hardware using an STM32 microcontroller. The game displays on a colorful WS2812B 8x8 LED matrix, creating a vibrant "Rainbow Snake" experience. Players control the snake using a keyboard matrix, navigating to collect food and grow longer while avoiding collisions with walls and the snake's own body.
 
-## 🎥 Demo Videos
-
-<!-- ### Gameplay Demo
-https://github.com/Priyanshu0901/A_Snake_Game/assets -->
-
-
-### AI Autoplay Mode
+## 🎥 Demo Video (AI Autoplay Mode)
 
 ![](https://github.com/Priyanshu0901/A_Snake_Game/blob/main/assets/Snake_Autoplay.gif)
 
-## ✨ Features
+## Features
 
 - **Classic Snake Gameplay**: Navigate the snake to collect food and grow longer
 - **AI Autoplay Mode**: Watch the snake play itself using Hamiltonian cycle and path optimization algorithms
@@ -30,7 +24,7 @@ https://github.com/Priyanshu0901/A_Snake_Game/assets -->
 - **Compact Design**: Fits within 64 LEDs (8x8 matrix)
 - **Optional I/O Expansion**: PCF8574 I/O expander support for additional features
 
-## 🛠️ Hardware Requirements
+## Hardware Requirements
 
 | Component | Specification | Quantity |
 |-----------|--------------|----------|
@@ -44,19 +38,19 @@ https://github.com/Priyanshu0901/A_Snake_Game/assets -->
 ### Pin Configuration
 
 The exact pin configuration depends on your setup, but typically:
-- **WS2812B Data Pin**: Connected to a GPIO pin configured for PWM/DMA output
-- **Keyboard Matrix**: Connected to GPIO pins (8 rows + 8 columns)
-- **PCF8574 (Optional)**: Connected via I2C (SCL/SDA)
+- **WS2812B Data Pin**: Connected to a GPIO pin (PB0 )
+- **Keyboard Matrix**: Connected to PCF8574 via I2C1
+- **PCF8574 **: Connected via I2C (SCL - PB7/SDA - PB6)
 
 > **Note**: Check the `.ioc` file for the exact pin configuration used in this project.
 
-## 💻 Software Requirements
+## Software Requirements
 
 - **IDE**: STM32CubeIDE
 - **Programmer**: ST-LINK (built into Nucleo board)
-- **Optional**: Serial terminal for debugging (9600 baud)
+- **Optional**: Serial terminal for debugging ->STLINK VCOM (115200 baud)
 
-## 🔌 Hardware Setup
+## Hardware Setup
 
 ### 1. WS2812B LED Matrix Connection
 
@@ -68,7 +62,7 @@ PB0            →    DIN (Data Input)
 GND            →    GND
 ```
 
-> ⚠️ **Important**: WS2812B LEDs can draw significant current. Use an external 5V power supply for the LED matrix. The Nucleo board's 5V pin may not provide sufficient current.
+> **Important**: WS2812B LEDs can draw significant current. Use an external 5V power supply for the LED matrix. The Nucleo board's 5V pin may not provide sufficient current.
 
 ### 2. Keyboard Matrix Connection
 
@@ -78,18 +72,18 @@ Connect the 8x8 keyboard matrix to GPIO pins:
 
 Configure these pins in the `.ioc` file using STM32CubeMX.
 
-### 3. Optional PCF8574 I/O Expander
+### 3. PCF8574 I/O Expander
 
 ```
 STM32F411RE    →    PCF8574
 ──────────────────────────
-PB8 (SCL)      →    SCL
-PB9 (SDA)      →    SDA
+PB7 (SCL)      →    SCL
+PB6 (SDA)      →    SDA
 3.3V           →    VCC
 GND            →    GND
 ```
 
-## 📥 Installation
+## Installation
 
 ### Step 1: Clone the Repository
 
@@ -132,7 +126,7 @@ To enable the AI autoplay feature:
 
 When AI mode is enabled, the snake will play automatically using a Hamiltonian cycle algorithm with path optimization for efficient gameplay.
 
-## 🎯 Game Controls
+## Game Controls
 
 Use the keyboard matrix to control the snake:
 
@@ -145,7 +139,7 @@ Use the keyboard matrix to control the snake:
 
 > **Note**: The exact key mapping depends on your keyboard matrix layout. Check the code to customize key assignments.
 
-## 🔧 Technical Details
+## Technical Details
 
 ### WS2812B Control 
 ```c
@@ -178,7 +172,7 @@ The game runs in a main loop that:
 6. Adds delay for game speed control
 
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### LEDs Not Lighting Up
 
@@ -189,8 +183,6 @@ The game runs in a main loop that:
 ### Keyboard Not Responding
 
 - **Check connections**: Verify all row and column pins are correctly connected.
-- **Pin configuration**: Ensure GPIO pins are configured correctly (input with pull-up/pull-down).
-- **Debouncing**: Add software debouncing if keys are registering multiple times.
 
 ### Game Runs Too Fast/Slow
 
@@ -198,6 +190,6 @@ Adjust tick rates in the Game.h to control game speed.
 
 ---
 
-**Enjoy playing Rainbow Snake! 🐍🌈**
+## Enjoy playing Rainbow Snake!
 
 *If you found this project helpful, please give it a ⭐ star!*
