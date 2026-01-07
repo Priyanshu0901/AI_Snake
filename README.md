@@ -693,11 +693,4 @@ Inspired by classic Snake implementations and modern AI techniques. Special than
 
 ---
 
-## Contact
-
-**Developer:** Priyanshu0901  
-**Repository:** [github.com/Priyanshu0901/AI_Snake](https://github.com/Priyanshu0901/AI_Snake)
-
----
-
 *⭐ If you found this project interesting, please star the repository!*
