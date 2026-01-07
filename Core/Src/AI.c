@@ -41,14 +41,21 @@ void visit_node(int x, int y) {
 
 	for (int i = 0; i < 4; i++) {
 		int nx = x, ny = y;
-		if (dirs[i] == 0)
+		switch ((key_action_e) dirs[i]) {
+		case ACTION_UP:
 			ny--;      // Up
-		else if (dirs[i] == 1)
+			break;
+		case ACTION_DOWN:
 			ny++; // Down
-		else if (dirs[i] == 2)
+		case ACTION_LEFT:
 			nx--; // Left
-		else if (dirs[i] == 3)
+			break;
+		case ACTION_RIGHT:
 			nx++; // Right
+			break;
+		default:
+			break;
+		}
 
 		// Check bounds and if the neighbor was already visited
 		if (nx >= 0 && nx < 4 && ny >= 0 && ny < 4
@@ -174,15 +181,19 @@ key_action_e AI_get_action(AI_t *const me) {
 
 			// 3. Validate: 180-degree turn check
 			if ((dir == ACTION_UP && me->game_state->current_dir == ACTION_DOWN)
-					|| (dir == ACTION_DOWN && me->game_state->current_dir == ACTION_UP)
-					|| (dir == ACTION_LEFT && me->game_state->current_dir == ACTION_RIGHT)
-					|| (dir == ACTION_RIGHT && me->game_state->current_dir == ACTION_LEFT))
+					|| (dir == ACTION_DOWN
+							&& me->game_state->current_dir == ACTION_UP)
+					|| (dir == ACTION_LEFT
+							&& me->game_state->current_dir == ACTION_RIGHT)
+					|| (dir == ACTION_RIGHT
+							&& me->game_state->current_dir == ACTION_LEFT))
 				continue;
 
 			// 4. Validate: Body Collision
 			bool hits_body = false;
 			for (int b = 0; b < current_len; b++) {
-				if (me->game_state->body[b].x == nx && me->game_state->body[b].y == ny) {
+				if (me->game_state->body[b].x == nx
+						&& me->game_state->body[b].y == ny) {
 					hits_body = true;
 					break;
 				}
@@ -198,23 +209,26 @@ key_action_e AI_get_action(AI_t *const me) {
 
 			// We walk the Hamiltonian path from the neighbor's index to the tail's index
 			while (walk_idx != tail_idx) {
-			    C_COORDINATES_t path_pos = me->ham_path[walk_idx];
+				C_COORDINATES_t path_pos = me->ham_path[walk_idx];
 
-			    // Check if any part of the snake body is sitting on this path index
-			    for (int b = 0; b < current_len; b++) {
-			        if (me->game_state->body[b].x == path_pos.x && me->game_state->body[b].y == path_pos.y) {
-			            path_is_trapped = true;
-			            break;
-			        }
-			    }
+				// Check if any part of the snake body is sitting on this path index
+				for (int b = 0; b < current_len; b++) {
+					if (me->game_state->body[b].x == path_pos.x
+							&& me->game_state->body[b].y == path_pos.y) {
+						path_is_trapped = true;
+						break;
+					}
+				}
 
-			    if (path_is_trapped) break;
+				if (path_is_trapped)
+					break;
 
-			    // Advance to the next index in the 64-step loop
-			    walk_idx = (walk_idx + 1) % 64;
+				// Advance to the next index in the 64-step loop
+				walk_idx = (walk_idx + 1) % 64;
 			}
 
-			if (path_is_trapped) continue; // This shortcut would trap the snake!
+			if (path_is_trapped)
+				continue; // This shortcut would trap the snake!
 
 			// 6. TARGETING: Pick the move that gets us closest to food in the Hamiltonian sequence
 			int dist_to_food =

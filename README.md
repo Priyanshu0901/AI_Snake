@@ -1,6 +1,6 @@
 # AI Snake
 
-A classic Snake game implementation running on an STM32F411RE microcontroller with AI
+A classic Snake game implementation running on an STM32F411RE microcontroller with AI.
 
 ![STM32](https://img.shields.io/badge/STM32-F411RE-blue)
 ![Display](https://img.shields.io/badge/Display-WS2812B-green)
