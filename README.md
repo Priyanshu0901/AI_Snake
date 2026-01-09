@@ -9,7 +9,7 @@
 
 AI Snake is an embedded systems implementation of the classic Snake game running on the STM32F411RE microcontroller. The project features a sophisticated AI agent based on Hamiltonian cycle algorithms with path optimization, enabling autonomous gameplay on an 8x8 WS2812B RGB LED matrix. The system supports both manual control via an 8x8 keyboard matrix and fully autonomous AI-driven gameplay.
 
-The AI implementation uses a combination of Hamiltonian cycle generation and greedy shortest-path optimization to ensure the snake can theoretically achieve a perfect game (filling the entire board) while minimizing the number of moves required.
+The ALGO implementation uses a combination of Hamiltonian cycle generation and greedy shortest-path optimization to ensure the snake can theoretically achieve a perfect game (filling the entire board) while minimizing the number of moves required.
 
 ![](https://github.com/Priyanshu0901/A_Snake_Game/blob/main/assets/Snake_Autoplay.gif)
 
@@ -29,7 +29,7 @@ graph TB
     subgraph "Processing Layer"
         MCU[STM32F411RE<br/>ARM Cortex-M4<br/>100MHz]
         GAME[Game Logic Module]
-        AI[AI Engine<br/>Hamiltonian Cycle]
+        ALGO[ALGO Engine<br/>Hamiltonian Cycle]
         INPUT[Input Handler]
     end
     
@@ -48,7 +48,7 @@ graph TB
     PCF --> I2C
     I2C --> INPUT
     INPUT --> GAME
-    AI --> GAME
+    ALGO --> GAME
     GAME --> WS
     WS --> GPIO_BB
     GPIO_BB --> LED
@@ -56,7 +56,7 @@ graph TB
     UART -.-> DEBUG[Serial Terminal]
     
     style MCU fill:#4A90E2
-    style AI fill:#E25555
+    style ALGO fill:#E25555
     style GAME fill:#50C878
     style LED fill:#FFD700
 ```
@@ -68,7 +68,7 @@ graph TB
     subgraph "Application Layer"
         MAIN[main.c]
         GAME_LOGIC[Game.c/h]
-        AI_MODULE[AI Module]
+        AI_MODULE[ALGO Module]
     end
     
     subgraph "Hardware Abstraction Layer"
@@ -112,16 +112,16 @@ graph TB
 
 ---
 
-## AI Algorithm Architecture
+## Algorithm Architecture
 
-The AI implementation uses a **Hamiltonian Cycle with Greedy Optimization** approach, combining safety (guaranteed win) with efficiency (minimal moves).
+The ALGO implementation uses a **Hamiltonian Cycle with Greedy Optimization** approach, combining safety (guaranteed win) with efficiency (minimal moves).
 
-### AI Decision Flow
+### ALGO Decision Flow
 
 ```mermaid
 graph TD
-    START([AI Decision Cycle])
-    START --> CHECK_MODE{AI Mode<br/>Enabled?}
+    START([ALGO Decision Cycle])
+    START --> CHECK_MODE{ALGO Mode<br/>Enabled?}
     
     CHECK_MODE -->|No| MANUAL[Read Keyboard Input]
     CHECK_MODE -->|Yes| COMPUTE_HC[Compute Hamiltonian Cycle<br/>if not cached]
@@ -277,7 +277,7 @@ Scanning Algorithm (Keypad.c):
 | Component | Flash (ROM) | RAM | Details |
 |-----------|-------------|-----|---------|
 | **Game Logic** | ~8 KB | ~2 KB | State machine, collision detection |
-| **AI Engine** | ~12 KB | ~4 KB | Hamiltonian cycle, path finding |
+| **ALGO Engine** | ~12 KB | ~4 KB | Hamiltonian cycle, path finding |
 | **WS2812B Driver** | ~2 KB | ~0.5 KB | Bit-banging (no buffers needed) |
 | **Display/Canvas** | ~3 KB | ~0.4 KB | 64 pixels × 3 bytes = 192B × 2 |
 | **HAL/LL Drivers** | ~15 KB | ~1 KB | STM32 peripheral drivers |
@@ -288,7 +288,7 @@ Scanning Algorithm (Keypad.c):
 ### Performance Metrics
 
 - **Game Tick Rate**: ~100-200ms (configurable)
-- **AI Decision Time**: <5ms (cached Hamiltonian cycle)
+- **ALGO Decision Time**: <5ms (cached Hamiltonian cycle)
 - **LED Refresh Rate**: ~50Hz (20ms per frame)
 - **Input Polling Rate**: ~50Hz (20ms debounce period)
 - **CPU Utilization**: ~15-20% (mostly idle in delays)
@@ -301,7 +301,7 @@ Scanning Algorithm (Keypad.c):
 AI_Snake/
 ├── Core/
 │   ├── Inc/                      # Header files
-│   │   ├── main.h               # Main configuration, #define AI
+│   │   ├── main.h               # Main configuration, #define ALGO
 │   │   ├── Game.h               # Game logic interface
 │   │   ├── Display.h            # Display abstraction
 │   │   ├── WS2812B.h            # LED driver interface
@@ -354,7 +354,7 @@ typedef struct {
 Every 1000/120 ms (~8.3ms):
   ├─ [Manual Mode Only] Every 4 frames (30Hz): Poll input
   ├─ Every 12 frames (10Hz): 
-  │    ├─ Get action (AI or Input)
+  │    ├─ Get action (ALGO or Input)
   │    ├─ GAME_update() - validate and apply direction
   │    └─ GAME_tick() - move snake, check collisions
   ├─ Every 2 frames (60Hz): GAME_render() - draw to canvas buffer
@@ -511,19 +511,19 @@ cd AI_Snake
 # Run → Debug (F11)
 ```
 
-### Enabling AI Mode
+### Enabling ALGO Mode
 
-To enable autonomous AI gameplay:
+To enable autonomous ALGO gameplay:
 
 1. Open `Core/Inc/main.h`
 2. Add the preprocessor definition:
    ```c
-   #define AI
+   #define ALGO
    ```
 3. Rebuild the project (`Ctrl+B`)
 4. Flash to the board
 
-When AI mode is disabled, the snake is controlled manually via the keyboard matrix.
+When ALGO mode is disabled, the snake is controlled manually via the keyboard matrix.
 
 ### Debug Configuration
 
@@ -604,14 +604,14 @@ STM32F411RE NUCLEO         WS2812B 8x8 Matrix
 5. Ensure GND of external supply and Nucleo are connected
 6. Check that no high-priority interrupts are enabled during LED write
 
-### AI Not Working
+### ALGO Not Working
 
 **Symptom:** Snake moves randomly or crashes frequently
 
 **Solutions:**
-1. Verify `#define AI` is present in `main.h`
+1. Verify `#define ALGO` is present in `main.h`
 2. Check Hamiltonian cycle generation for 8x8 grid (must have even dimension)
-3. Add debug UART output to trace AI decisions
+3. Add debug UART output to trace ALGO decisions
 4. Verify pathfinding functions are not timing out
 
 ### Keyboard Unresponsive
@@ -655,7 +655,7 @@ Or adjust the master refresh rate:
 ## Future Enhancements
 
 - [ ] Add difficulty levels (varying tick rates)
-- [ ] Implement multiple AI strategies (greedy, genetic algorithm, neural network)
+- [ ] Implement multiple ALGO strategies (greedy, genetic algorithm, neural network)
 - [ ] Add sound effects via buzzer/speaker
 - [ ] WiFi module integration for multiplayer
 - [ ] Persistent high score storage in EEPROM
