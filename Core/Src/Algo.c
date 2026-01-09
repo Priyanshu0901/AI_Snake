@@ -5,7 +5,7 @@
  *      Author: rayv_mini_pc
  */
 
-#include <Algo.h>
+#include "Algo.h"
 #include "stdlib.h"
 
 typedef struct {
@@ -41,12 +41,14 @@ void visit_node(int x, int y) {
 
 	for (int i = 0; i < 4; i++) {
 		int nx = x, ny = y;
+
 		switch ((key_action_e) dirs[i]) {
 		case ACTION_UP:
 			ny--;      // Up
 			break;
 		case ACTION_DOWN:
 			ny++; // Down
+			break;
 		case ACTION_LEFT:
 			nx--; // Left
 			break;

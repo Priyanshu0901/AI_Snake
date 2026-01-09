@@ -17,12 +17,12 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <Algo.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Game.h"
+#include "Algo.h"
 #include <stdlib.h>
 /* USER CODE END Includes */
 
@@ -111,7 +111,7 @@ int main(void) {
 
 #ifdef ALGO
 	ALGO_t my_algo_player;
-	ALGO_ctor(&my_algo_player,&my_game_engine);
+	ALGO_ctor(&my_algo_player, &my_game_engine);
 #elif
 	uint8_t counter_input = 0;
 #endif

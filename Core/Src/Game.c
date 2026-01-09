@@ -183,7 +183,7 @@ void check_collisions(GAME_Engine_t *const me) {
 
 void GAME_update(GAME_Engine_t *const me, key_action_e const new_action) {
 
-#ifndef AI
+#ifndef ALGO
 	if(me->game_over && new_action != ACTION_NONE){
 		me->game_over = false;
 	}

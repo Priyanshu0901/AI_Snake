@@ -46,7 +46,7 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-#define ALGO
+#define ALGO 1
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
