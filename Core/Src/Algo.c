@@ -1,11 +1,11 @@
 /*
- * AI.c
+ * Algo.c
  *
  *  Created on: 04-Jan-2026
  *      Author: rayv_mini_pc
  */
 
-#include "AI.h"
+#include <Algo.h>
 #include "stdlib.h"
 
 typedef struct {
@@ -87,7 +87,7 @@ void generate_mst_4x4() {
 	visit_node(rand() % 4, rand() % 4);
 }
 
-void expand_mst_to_hamiltonian(AI_t *const me) {
+void expand_mst_to_hamiltonian(ALGO_t *const me) {
 	int x = 0, y = 0;
 	for (int i = 0; i < 64; i++) {
 		me->ham_path[i].x = x;
@@ -121,18 +121,18 @@ void expand_mst_to_hamiltonian(AI_t *const me) {
 	}
 }
 
-void init_grid_to_index(AI_t *const me) {
+void init_grid_to_index(ALGO_t *const me) {
 	for (int i = 0; i < MAX_SNAKE_LEN; i++) {
 		me->grid_to_index[me->ham_path[i].y][me->ham_path[i].x] = i;
 	}
 }
 
-void AI_ctor(AI_t *const me, GAME_Engine_t *game_state) {
+void ALGO_ctor(ALGO_t *const me, GAME_Engine_t *game_state) {
 	me->game_state = game_state;
-	AI_reset(me);
+	ALGO_reset(me);
 }
 
-void AI_reset(AI_t *const me) {
+void ALGO_reset(ALGO_t *const me) {
 
 	// 1. Build a Randomized Spanning Tree on a 4x4 grid
 	generate_mst_4x4();
@@ -143,10 +143,10 @@ void AI_reset(AI_t *const me) {
 	init_grid_to_index(me);
 
 	me->game_state->game_over = false;
-	log_message("AI", LOG_INFO, "Path Generated. Ready to play.");
+	log_message("ALGO", LOG_INFO, "Path Generated. Ready to play.");
 }
 
-key_action_e AI_get_action(AI_t *const me) {
+key_action_e ALGO_get_action(ALGO_t *const me) {
 	C_COORDINATES_t head = me->game_state->body[0];
 	C_COORDINATES_t tail = me->game_state->body[me->game_state->length - 1];
 	C_COORDINATES_t food = me->game_state->food;

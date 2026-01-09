@@ -17,12 +17,12 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <Algo.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Game.h"
-#include "AI.h"
 #include <stdlib.h>
 /* USER CODE END Includes */
 
@@ -109,9 +109,9 @@ int main(void) {
 	GAME_Engine_t my_game_engine;
 	GAME_ctor(&my_game_engine, &my_canvas, &my_input);
 
-#ifdef AI
-	AI_t my_ai_player;
-	AI_ctor(&my_ai_player,&my_game_engine);
+#ifdef ALGO
+	ALGO_t my_algo_player;
+	ALGO_ctor(&my_algo_player,&my_game_engine);
 #elif
 	uint8_t counter_input = 0;
 #endif
@@ -133,7 +133,7 @@ int main(void) {
 
 		if (now - last_tick >= (1000 / REFRESH_RATE)) { // 60 FPS
 			last_tick = now;
-#ifndef AI
+#ifndef ALGO
 			if (++counter_input > REFRESH_RATE / INPUT_RATE) {
 				// 1. Get Input
 				counter_input = 0;
@@ -144,8 +144,8 @@ int main(void) {
 
 			if (++counter_tick > REFRESH_RATE / TICK_RATE) {
 				counter_tick = 0;
-#ifdef AI
-				GAME_update(&my_game_engine, AI_get_action(&my_ai_player));
+#ifdef ALGO
+				GAME_update(&my_game_engine, ALGO_get_action(&my_algo_player));
 #endif
 				GAME_tick(&my_game_engine);
 			}
@@ -161,8 +161,8 @@ int main(void) {
 			DISPLAY_update(&my_display);
 
 			if (my_game_engine.game_over) {
-#ifdef AI
-				AI_reset(&my_ai_player);
+#ifdef ALGO
+				ALGO_reset(&my_algo_player);
 #endif
 			}
 		}
