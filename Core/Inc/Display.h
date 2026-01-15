@@ -11,7 +11,7 @@
 #include "WS2812B.h"
 #include "pixel.h"
 
-#define DISPLAY_ROWS (8 * 3)
+#define DISPLAY_ROWS (8 * 3) // TODO: Figure out Display stitching if to expand
 #define DISPLAY_COLS 8
 
 #define DEFAULT_BRIGHTNESS 1U << 3
